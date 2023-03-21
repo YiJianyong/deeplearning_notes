@@ -158,14 +158,9 @@ A.shape, x.shape, torch.mv(A, x)
 ### 3.2 条件概率
 + 条件概率是B = b发生的概率，前提是A = a已经发生。
 
+### 3.3 贝叶斯定理
 
-
-
-
-
-
-
-
+![image](https://user-images.githubusercontent.com/78517435/226596968-c28bb558-bca2-433b-963f-6a608880bf4b.png)
 
 
 
