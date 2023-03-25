@@ -31,25 +31,26 @@ y = torch.relu(x)
 d2l.plot(x.detach(), y.detach(), 'x', 'relu(x)', figsize=(5, 2.5))
 ```
   + 当输入为负时，ReLU函数的导数为0，而当输入为正时，ReLU函数的导数为1。
- ```python
- #relu函数的导数图
- y.backward(torch.ones_like(x), retain_graph=True)
+```python
+#relu函数的导数图
+y.backward(torch.ones_like(x), retain_graph=True)
 d2l.plot(x.detach(), x.grad, 'x', 'grad of relu', figsize=(5, 2.5))
- ```
+```
    + relu函数表现良好：要么让参数消失，要么让参数通过。 这使得优化表现得更好，并且ReLU减轻了困扰以往神经网络的梯度消失问题
 
 + 2.sigmoid函数
-
   + sigmoid函数将一个定义域在R的输入变换为区间（0，1）上的输出，称为压缩函数
+
 ![image](https://user-images.githubusercontent.com/78517435/227706600-14372487-1765-4d63-ae9b-76fa647de564.png)  
 
 
    + sigmoid在隐藏层中已经较少使用， 它在大部分时候被更简单、更容易训练的ReLU所取代。
-  ```python
-  #绘制sigmoid函数
- y = torch.sigmoid(x)
+ 
+```python
+#绘制sigmoid函数
+y = torch.sigmoid(x)
 d2l.plot(x.detach(), y.detach(), 'x', 'sigmoid(x)', figsize=(5, 2.5))
-  ```
+```
 
 ```python
 #sigmoid函数的导数
@@ -60,6 +61,7 @@ d2l.plot(x.detach(), x.grad, 'x', 'grad of sigmoid', figsize=(5, 2.5))
 ```
 + 3.tanh函数
   + tanh(双曲正切)函数也能将其输入压缩转换到区间(-1, 1)上
+ 
 ![image](https://user-images.githubusercontent.com/78517435/227706757-112a48e3-7c75-4af1-a738-6c86b6b7a6de.png)
 
 
