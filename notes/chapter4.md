@@ -23,6 +23,7 @@
   + 最受欢迎的激活函数，因为实现简单，表现良好
 ![image](https://user-images.githubusercontent.com/78517435/227706425-c947d5d7-18ac-475b-9dda-f48b43786864.png)
 
+
 ```python
 #relu函数
 x = torch.arange(-8.0, 8.0, 0.1, requires_grad=True)
@@ -43,6 +44,7 @@ d2l.plot(x.detach(), x.grad, 'x', 'grad of relu', figsize=(5, 2.5))
 
 ![image](https://user-images.githubusercontent.com/78517435/227706600-14372487-1765-4d63-ae9b-76fa647de564.png)
 
+
    + sigmoid在隐藏层中已经较少使用， 它在大部分时候被更简单、更容易训练的ReLU所取代。
   ```python
   #绘制sigmoid函数
@@ -60,6 +62,7 @@ d2l.plot(x.detach(), x.grad, 'x', 'grad of sigmoid', figsize=(5, 2.5))
 + 3.tanh函数
   + tanh(双曲正切)函数也能将其输入压缩转换到区间(-1, 1)上
  ![image](https://user-images.githubusercontent.com/78517435/227706757-112a48e3-7c75-4af1-a738-6c86b6b7a6de.png)
+
 
  ```python
  #绘制tanh函数
