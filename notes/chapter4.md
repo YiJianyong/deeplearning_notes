@@ -9,7 +9,7 @@
 + 例子：我们想要根据体温预测死亡率。 对体温高于37摄氏度的人来说，温度越高风险越大。 然而，对体温低于37摄氏度的人来说，温度越高风险就越低。我们可以使用**与37摄氏度的距离**作为特征。
 
 + 我们可以在网络中加入**一个或多个隐藏层**来克服线性模型的限制， 使其能处理更普遍的函数关系类型。
-![image](https://user-images.githubusercontent.com/78517435/227703609-c870e7c5-9d9b-4af7-8467-2edd555e30e6.png)
+![image](https://user-images.githubusercontent.com/78517435/227703609-c870e7c5-9d9b-4af7-8467-2edd555e30e6.png)  
 
 
 + 上述多层感知机模型中输入层不涉及计算，只需要完成隐藏层和输出层的计算，因此这个感知机模型的层数为2
@@ -21,7 +21,7 @@
 
 + 1.ReLU激活函数
   + 最受欢迎的激活函数，因为实现简单，表现良好
-![image](https://user-images.githubusercontent.com/78517435/227706425-c947d5d7-18ac-475b-9dda-f48b43786864.png)
+![image](https://user-images.githubusercontent.com/78517435/227706425-c947d5d7-18ac-475b-9dda-f48b43786864.png)  
 
 
 ```python
@@ -41,8 +41,7 @@ d2l.plot(x.detach(), x.grad, 'x', 'grad of relu', figsize=(5, 2.5))
 + 2.sigmoid函数
 
   + sigmoid函数将一个定义域在R的输入变换为区间（0，1）上的输出，称为压缩函数
-
-![image](https://user-images.githubusercontent.com/78517435/227706600-14372487-1765-4d63-ae9b-76fa647de564.png)
+![image](https://user-images.githubusercontent.com/78517435/227706600-14372487-1765-4d63-ae9b-76fa647de564.png)  
 
 
    + sigmoid在隐藏层中已经较少使用， 它在大部分时候被更简单、更容易训练的ReLU所取代。
@@ -61,7 +60,7 @@ d2l.plot(x.detach(), x.grad, 'x', 'grad of sigmoid', figsize=(5, 2.5))
 ```
 + 3.tanh函数
   + tanh(双曲正切)函数也能将其输入压缩转换到区间(-1, 1)上
- ![image](https://user-images.githubusercontent.com/78517435/227706757-112a48e3-7c75-4af1-a738-6c86b6b7a6de.png)
+![image](https://user-images.githubusercontent.com/78517435/227706757-112a48e3-7c75-4af1-a738-6c86b6b7a6de.png)
 
 
  ```python
