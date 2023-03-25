@@ -21,6 +21,7 @@
 
 + 1.ReLU激活函数
   + 最受欢迎的激活函数，因为实现简单，表现良好
+
 ![image](https://user-images.githubusercontent.com/78517435/227706425-c947d5d7-18ac-475b-9dda-f48b43786864.png)  
 
 
