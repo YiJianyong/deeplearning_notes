@@ -179,8 +179,154 @@ d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
 
 ## 4.模型选择、欠拟合和过拟合
 
+### 4.1训练误差和泛化误差
+
++ 训练误差：模型在训练集上计算得到的误差
++ 泛化误差：模型应用在同样从**原始样本的分布中**抽取**无限多**的数据样本时，模型误差的期望
+  + 我们永远不能准确计算泛化误差，只能将模型应用于一个独立的测试集来估计泛化误差
+  + 我们假设训练数据和测试数据都是从相同的分布中独立提取的，即不违背独立性假设
+  + 有时候我们轻微违背独立同分布假设，模型可以依旧运行地很好，但是有些违背独立同分布的假设会引起问题
+
++ 模型复杂性
+  + 通常对于神经网络，我们认为需要更多训练迭代的模型更加复杂，则需要早停的模型就不那么复杂
+
++ 影响模型泛化的因素
+  + 可调整参数的数量：可调整的参数数量（自由度）很大时往往更容易过拟合
+  + 参数采用的值：当权重的取值范围较大时，模型可能更容易过拟合
+  + 训练样本的数量：样本数量较小时容易过拟合
 
 
+### 4.2模型选择
+
++ 验证集
+  + 不能依靠测试数据进行模型选择：容易发生数据泄露，导致测试数据发生过拟合
+  + 因此常见解决方法：将数据分成三份，训练集、验证集、测试集
+
+
++ K折交叉验证
+  + 训练数据集稀缺，无法提供足够发数据构成一个合适的验证集
+  + 将原始训练数据分成K个不重叠的子集，执行K次模型训练和验证，取k次实验平均结果估计训练和验证误差
+
+
+### 4.3欠拟合和过拟合
++ 模型训练误差和验证误差都很大
+  + 如果模型不能降低训练误差，说明模型过于简单，无法学到东西
+  + 如果可以用一个更加复杂的模型降低模型训练误差，称原模型欠拟合
+
++ 训练误差明显低于验证误差，这表明出现了严重的过拟合
+
+
++ 模型复杂度对欠拟合和过拟合的影响
+
+![image](https://user-images.githubusercontent.com/78517435/228162262-58215053-0d0e-45c9-9a9a-886fb4b50485.png)
+
++ 训练数据集对欠拟合和过拟合的影响
+  + 训练集中的样本越少，我们就越有可能过拟合
+  + 随着数据量的增加，泛化误差通常会减少。当不减少时即达到了模型的最优
+
+
+### 4.4多项式回归
+
++ 通过多项式拟合来探索这些概念
+
+```python
+import math
+import numpy as np
+import torch
+from torch import nn
+from d2l import torch as d2l
+
+```
+
++ 生成数据集
+
+```python
+max_degree = 20  # 多项式的最大阶数
+n_train, n_test = 100, 100  # 训练和测试数据集大小
+true_w = np.zeros(max_degree)  # 分配大量的空间
+true_w[0:4] = np.array([5, 1.2, -3.4, 5.6])
+
+features = np.random.normal(size=(n_train + n_test, 1))
+np.random.shuffle(features)
+poly_features = np.power(features, np.arange(max_degree).reshape(1, -1))
+for i in range(max_degree):
+    poly_features[:, i] /= math.gamma(i + 1)  # gamma(n)=(n-1)!
+# labels的维度:(n_train+n_test,)
+labels = np.dot(poly_features, true_w)
+labels += np.random.normal(scale=0.1, size=labels.shape)
+
+```
+
+```python
+# NumPy ndarray转换为tensor
+true_w, features, poly_features, labels = [torch.tensor(x, dtype=
+    torch.float32) for x in [true_w, features, poly_features, labels]]
+
+features[:2], poly_features[:2, :], labels[:2]
+```
++ 对模型进行训练和测试
+
+
+```python
+#实现一个函数来评估模型在给定数据集上的损失
+def evaluate_loss(net, data_iter, loss):  #@save
+    """评估给定数据集上模型的损失"""
+    metric = d2l.Accumulator(2)  # 损失的总和,样本数量
+    for X, y in data_iter:
+        out = net(X)
+        y = y.reshape(out.shape)
+        l = loss(out, y)
+        metric.add(l.sum(), l.numel())
+    return metric[0] / metric[1]
+
+```
+
+```python
+#定义训练函数
+def train(train_features, test_features, train_labels, test_labels,
+          num_epochs=400):
+    loss = nn.MSELoss(reduction='none')
+    input_shape = train_features.shape[-1]
+    # 不设置偏置，因为我们已经在多项式中实现了它
+    net = nn.Sequential(nn.Linear(input_shape, 1, bias=False))
+    batch_size = min(10, train_labels.shape[0])
+    train_iter = d2l.load_array((train_features, train_labels.reshape(-1,1)),
+                                batch_size)
+    test_iter = d2l.load_array((test_features, test_labels.reshape(-1,1)),
+                               batch_size, is_train=False)
+    trainer = torch.optim.SGD(net.parameters(), lr=0.01)
+    animator = d2l.Animator(xlabel='epoch', ylabel='loss', yscale='log',
+                            xlim=[1, num_epochs], ylim=[1e-3, 1e2],
+                            legend=['train', 'test'])
+    for epoch in range(num_epochs):
+        d2l.train_epoch_ch3(net, train_iter, loss, trainer)
+        if epoch == 0 or (epoch + 1) % 20 == 0:
+            animator.add(epoch + 1, (evaluate_loss(net, train_iter, loss),
+                                     evaluate_loss(net, test_iter, loss)))
+    print('weight:', net[0].weight.data.numpy())
+```
+
+```python
+# 从多项式特征中选择前4个维度，即1,x,x^2/2!,x^3/3!
+train(poly_features[:n_train, :4], poly_features[n_train:, :4],
+      labels[:n_train], labels[n_train:])
+
+```
+
+```python
+# 从多项式特征中选择前2个维度，即1和x
+train(poly_features[:n_train, :2], poly_features[n_train:, :2],
+      labels[:n_train], labels[n_train:])
+
+```
+
+
+```python
+# 从多项式特征中选取所有维度
+train(poly_features[:n_train, :], poly_features[n_train:, :],
+      labels[:n_train], labels[n_train:], num_epochs=1500)
+
+```
 
 ## 5.权重衰减
 
