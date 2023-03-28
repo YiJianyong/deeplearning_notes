@@ -23,7 +23,21 @@
 
 
 
+## [第六章  卷积神经网络](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter6.md)
 
+
+
+## [第七章  现代卷积神经网络](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter7.md)
+
+
+
+## [第八章  循环神经网络](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter8.md)
+
+
+## [第九章  现代循环神经网络](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter9.md)
+
+
+## [第十章  注意力机制](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter10.md)
 
 
 
