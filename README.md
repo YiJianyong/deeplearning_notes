@@ -1,5 +1,9 @@
 # study notes
 
+[教学视频](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
+
+[教材](https://zh-v2.d2l.ai/)
+
 ## [第一章  数据操作](https://github.com/YiJianyong/deeplearning_notes/blob/main/notes/chapter1.md)
 
 
