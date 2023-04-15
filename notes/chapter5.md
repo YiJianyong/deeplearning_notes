@@ -31,7 +31,37 @@ class MLP(nn.Module):
         return self.out(F.relu(self.hidden(X)))
 
 ```
+### 1.2顺序块
 
++ 顺序块中两个关键函数
+  + 一种将块逐个追加到列表中的函数
+  + 一种前向传播函数，将输入按追加块的顺序传递给块组成的“链条”
+
++ 下面是顺序块的一个简单实现
+  + __init__函数将每个模块追加到有序字典modules中
+
+```python
+class MySequential(nn.Module):
+    def __init__(self, *args):
+        super().__init__()
+        for idx, module in enumerate(args):
+            # 这里，module是Module子类的一个实例。我们把它保存在'Module'类的成员
+            # 变量_modules中。_module的类型是OrderedDict
+            self._modules[str(idx)] = module
+
+    def forward(self, X):
+        # OrderedDict保证了按照成员添加的顺序遍历它们
+        for block in self._modules.values():
+            X = block(X)
+        return X
+```
+
++ 使用我们上述定义的顺序块类重新实现多层感知机
+
+```python
+net = MySequential(nn.Linear(20, 256), nn.ReLU(), nn.Linear(256, 10))
+net(X)
+```
 
 
 
