@@ -2,7 +2,7 @@
 
 ## 课程学习资源
 
-[教学视频](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
+[B站教学视频](https://space.bilibili.com/1567748478/channel/seriesdetail?sid=358497)
 
 [教材](https://zh-v2.d2l.ai/)
 
